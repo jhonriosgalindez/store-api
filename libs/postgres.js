@@ -1,3 +1,7 @@
+/**
+ * Este archivo se reemplaza por pool
+ */
+
 const { Client } = require('pg')
 
 const getConnection = async () => {
@@ -16,5 +20,5 @@ const getConnection = async () => {
   return client
 }
 
-// Exportamos getConnection porque la vamos a usar en "service/users.js"
+// Exportamos getConnection porque la vamos a usar en "service/user.js"
 module.exports = getConnection
