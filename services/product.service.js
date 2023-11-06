@@ -2,13 +2,17 @@ const { faker } = require('@faker-js/faker');
 const boom = require('@hapi/boom');
 const pool = require('../libs/postgres.pool')
 
+// Sequelize maneja automáticamente una conexión por pool
+const sequelize = require('../libs/sequelize')
+
 class ProductsService {
 
-  constructor(){
+  constructor() {
     this.products = [];
     this.generate();
-    this.pool = pool // traigo "pool"
-    this.pool.on('error', (err) => console.error(err)) // Escucho por si sucede un error
+    // Con sequelize, ya no es necesario hacerla por pool
+    // this.pool = pool // traigo "pool"
+    // this.pool.on('error', (err) => console.error(err)) // Escucho por si sucede un error
   }
 
   generate() {
@@ -35,8 +39,16 @@ class ProductsService {
 
   async find() {
     const query = 'SELECT * FROM tasks'
-    const rta = await this.pool.query(query)
-    return rta.rows
+    // const rta = await this.pool.query(query)
+
+    // sequelize nos entrega la información en un array
+    const [data] = await sequelize.query(query)
+    return {
+      data,
+      // metadata, // solo queremos la data
+    }
+
+    // return rta.rows
     // return this.products;
   }
 
