@@ -1,6 +1,9 @@
 const boom = require('@hapi/boom');
-const getConnection = require('../libs/postgres')
+// const getConnection = require('../libs/postgres')
 const pool = require('../libs/postgres.pool')
+// Cada vez que se ejecuta setupModels, crea un mspace o espacio de nombres reservados llamado "models"
+const { models } = require('../libs/sequelize')
+
 
 class UserService {
   constructor() {
@@ -15,12 +18,14 @@ class UserService {
   async find() {
     // Empezamos a ejecutar la conexión
     // Cada vez que llamamos a getConnection, estamos generando una conexión nueva y esto crea y crea más conexiones. Usando "Pool" creamos una sola conexión y la compartimos.
-    const client = await getConnection() // Recordar que getConnection es asíncrono
+    // const client = await getConnection() // Recordar que getConnection es asíncrono
 
     // Ahora empezamos a realizar consultas (de nuestra tabla tasks)
-    const query = 'SELECT * FROM tasks'
-    const rta = await this.pool.query(query)
-    return rta.rows
+    // const query = 'SELECT * FROM tasks'
+    // const rta = await this.pool.query(query)
+    // return rta.rows
+    const rta = await models.User.findAll()
+    return rta
   }
 
   async findOne(id) {
